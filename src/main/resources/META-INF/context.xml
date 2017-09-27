@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context>
+	<Realm className="org.apache.catalina.realm.JDBCRealm"
+		driverName="com.mysql.jdbc.Driver" 
+		connectionURL="jdbc:mysql://127.9.255.2:3306/swappersws"
+		connectionName="adminkFPgmM4" connectionPassword="HkEA1a5fqZlQ"
+		userTable="user_security" userNameCol="name_user"
+		userCredCol="password" userRoleTable="permission_user"
+		roleNameCol="name_permission"
+		digest="MD5" />
+</Context>

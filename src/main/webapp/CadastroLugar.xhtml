@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:jsf="http://xmlns.jcp.org/jsf">
+	
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+	<title>Cadastro Lugar</title>
+	
+	<h:outputStylesheet library="css" name="consulta-place.css"/>
+</h:head>
+
+	<f:metadata>
+		<f:viewParam name="codigo" value="#{cadastroLugarBean.place}"/>
+	</f:metadata>
+
+<h:body>
+		<div id="header">
+			<div class="menu">
+				<h:form>
+					<h:outputFormat value="Olá {0}!" styleClass="logged-user">
+						<f:param value="#{facesContext.externalContext.userPrincipal.name}"/>
+					</h:outputFormat>
+				    
+				    <h:link outcome="ConsultaUser" rendered="#{request.isUserInRole('admin')}">Usuários</h:link>
+				    <h:link outcome="ConsultaPlace" rendered="#{request.isUserInRole('admin')}">Lugares</h:link>
+				    <h:link outcome="ConsultaDoacao" rendered="#{request.isUserInRole('admin')}">Doações</h:link>
+				    <h:link outcome="ConsultaAdocao" rendered="#{request.isUserInRole('admin')}">Adoções</h:link>
+					<h:commandLink action="#{loginBean.sair()}">Sair</h:commandLink>
+				</h:form>
+			</div>
+			<h:graphicImage value="/images/logo-swappers.png" styleClass="logo"/>
+			<h2>Swappers For Readers</h2>
+		</div>
+		
+		<h1>Cadastro Lugar</h1>
+		
+		<h:form id="frm" enctype="multipart/form-data">
+			
+			<h:button value="Novo" outcome="CadastroLugar" />
+			<h:button value="Consulta" outcome="ConsultaPlace" 
+				rendered="#{request.isUserInRole('admin')}"/>
+			
+			<h:messages showDetail="false" showSummary="true" 
+				styleClass="form-messages" errorClass="error" infoClass="info" />
+			
+			<h:panelGrid columns="2" styleClass="form-grid"
+					columnClasses="label, campo" id="panel">
+					
+					<h:outputLabel value="Nome"/>
+					<h:inputText size="60" value="#{cadastroLugarBean.place.name}" 
+					required="true" label="nome" />
+					
+					<h:outputLabel value="Rua"/>
+					<h:inputText size="60" value="#{cadastroLugarBean.place.street}" 
+					required="true" label="rua" />
+					
+					<h:outputLabel value="Nº"/>
+					<h:inputText size="60" value="#{cadastroLugarBean.place.number}" 
+					required="true" label="número" />
+					
+					<h:outputLabel value="Bairro"/>
+					<h:inputText size="60" value="#{cadastroLugarBean.place.district}" 
+					required="true" label="bairro" />
+					
+					<h:outputLabel value="CEP"/>
+					<h:inputText size="60" value="#{cadastroLugarBean.place.cep}" 
+					required="true" label="cep" />
+					
+					<h:outputLabel value="Horário"/>
+					<h:inputText size="60" value="#{cadastroLugarBean.place.hour_func}" 
+					required="true" label="horário" />
+					
+					<h:outputLabel value="Cidade"/>
+					<h:inputText size="60" value="#{cadastroLugarBean.place.city}" 
+					required="true" label="cidade" />
+					
+					<h:outputLabel value="Estado"/>
+					<h:inputText size="60" value="#{cadastroLugarBean.place.states}" 
+					required="true" label="estado" />
+					
+					<h:outputLabel value="Latitude"/>
+					<h:inputText size="60" value="#{cadastroLugarBean.place.latitude}" 
+					required="true" label="latitude" converter="javax.faces.Double"/>
+					
+					<h:outputLabel value="Longitude"/>
+					<h:inputText size="60" value="#{cadastroLugarBean.place.longitude}" 
+					required="true" label="longitude" converter="javax.faces.Double"/>
+					
+					<h:outputLabel value="Imagem" for="arquivo"/>
+					<h:inputFile id="arquivo" label="Imagem" value="#{cadastroLugarBean.file}" 
+					required="true" validator="br.edu.ifce.ImagemLugar"/>
+					
+					<h:outputLabel rendered="#{cadastroLugarBean.editando}"/>
+					<h:graphicImage value="/photo?codigo=#{cadastroLugarBean.place.id}"  
+					rendered="#{cadastroLugarBean.editando}" width="300" height="300" />
+					
+					<h:outputLabel/>
+					<h:commandButton value="Salvar" action="#{cadastroLugarBean.salvar}"
+					actionListener="#{cadastroLugarBean.uploadFile}">
+						<f:ajax execute="@form" render="@all"/>
+					</h:commandButton>
+					
+			</h:panelGrid>
+		</h:form>
+
+</h:body>
+
+</html>

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+	<title>Consulta Usuários</title>
+	
+	<h:outputStylesheet library="css" name="consulta-place.css"/>
+	
+</h:head>
+
+<h:body>
+	<div id="header">
+		<div class="menu">
+			<h:form>
+				<h:outputFormat value="Olá {0}!" styleClass="logged-user">
+					<f:param value="#{facesContext.externalContext.userPrincipal.name}"/>
+				</h:outputFormat>
+
+			    <h:link outcome="ConsultaUser" rendered="#{request.isUserInRole('admin')}">Usuários</h:link>
+				<h:link outcome="ConsultaPlace" rendered="#{request.isUserInRole('admin')}">Lugares</h:link>
+				<h:link outcome="ConsultaDoacao" rendered="#{request.isUserInRole('admin')}">Doações</h:link>
+				<h:link outcome="ConsultaAdocao" rendered="#{request.isUserInRole('admin')}">Adoções</h:link>
+				<h:commandLink action="#{loginBean.sair()}">Sair</h:commandLink>
+			</h:form>
+		</div>
+		<h:graphicImage value="/images/logo-swappers.png" styleClass="logo"/>
+		<h2>Swappers For Readers</h2>
+	</div>
+
+	<h1 id="us">Usuários</h1>
+	
+	<h:form id="frm">
+		
+		<p:messages showDetail="false" showSummary="true" autoUpdate="true"/>
+
+		<h:outputLabel styleClass="totalconsultauser" value="Total de usuários: #{consultaUserBean.users.size()}"/>
+		<br/>
+		
+		<p:dataTable var="user" value="#{consultaUserBean.users}" width="100%" 
+		 border="1" cellpadding="2" cellspacing="0"
+		 paginator="true" paginatorPosition="bottom" rows="15" id="userTable"
+		 style="margin-top: 5px"
+		 columnClasses="id,nome,email,dateBirth,password,cidade,estado">
+			
+			<p:column headerText="Id" styleClass="id" sortBy="#{user.id}">
+				<h:outputText value="#{user.id}" />
+			</p:column>
+			
+			<p:column headerText="Nome" styleClass="nome" sortBy="#{user.username}">
+				<h:outputText value="#{user.username}" />
+			</p:column>
+			
+			<p:column headerText="E-mail" styleClass="email" sortBy="#{user.email}">
+				<h:outputText value="#{user.email}" />
+			</p:column>
+			
+			<p:column headerText="Data Anivers." styleClass="dateBirth" sortBy="#{user.birthday}">
+				<h:outputText value="#{user.birthday !=null ? user.birthday : '-'}" >
+					<f:convertDateTime pattern="dd.MM.yyyy" />
+				</h:outputText>
+			</p:column>
+			
+			<p:column headerText="Password" styleClass="password" sortBy="#{user.password}">
+				<h:outputText value="#{user.password}" />
+			</p:column>
+			
+			<p:column headerText="Cidade" styleClass="cidade" sortBy="#{user.city}">
+				<h:outputText value="#{user.city !=null ? user.city : '-'}" />
+			</p:column>
+			
+			<p:column headerText="Estado" styleClass="estado" sortBy="#{user.state}">
+				<h:outputText value="#{user.state!=null ? user.state : '-'}" />
+			</p:column>
+			<f:facet name="footer">
+        		Total de usuários: #{fn:length(consultaUserBean.users)}
+    		</f:facet>	
+		</p:dataTable>
+	</h:form>
+</h:body>
+</html>

@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+	<title>Consulta Lugares</title>
+	
+	<h:outputStylesheet library="css" name="consulta-place.css"/>
+	
+</h:head>
+
+<h:body>
+	<div id="header">
+		<div class="menu">
+			<h:form>
+				<h:outputFormat value="Olá {0}!" styleClass="logged-user">
+					<f:param value="#{facesContext.externalContext.userPrincipal.name}"/>
+				</h:outputFormat>
+				
+			    <h:link outcome="ConsultaUser" rendered="#{request.isUserInRole('admin')}">Usuários</h:link>
+				<h:link outcome="ConsultaPlace" rendered="#{request.isUserInRole('admin')}">Lugares</h:link>
+			    <h:link outcome="ConsultaDoacao" rendered="#{request.isUserInRole('admin')}">Doações</h:link>
+			    <h:link outcome="ConsultaAdocao" rendered="#{request.isUserInRole('admin')}">Adoções</h:link>
+				<h:commandLink action="#{loginBean.sair()}">Sair</h:commandLink>
+			</h:form>
+		</div>
+		<h:graphicImage value="/images/logo-swappers.png" styleClass="logo"/>
+		<h2>Swappers For Readers</h2>
+	</div>
+
+	<h1>Lugares</h1>
+	
+	<h:form id="frm">
+		
+		<h:button value="Novo Lugar" outcome="CadastroLugar" 
+				rendered="#{request.isUserInRole('admin')}"/>
+				
+		<h:messages showDetail="false" showSummary="true" 
+				styleClass="form-messages" errorClass="error"
+				infoClass="info" />
+		
+		<h:dataTable var="place" value="#{consultaPlaceBean.places}" width="100%" 
+		styleClass="grid" headerClass="cabecalho" rowClasses="cor-sim, cor-nao" 
+		columnClasses="id,nome,cidade,estado,rua,bairro,numero,cep,horario,latitude,longitude">
+			
+			<h:column>
+				<f:facet name="header">Id</f:facet>
+				<h:outputText value="#{place.id}" />
+			</h:column>
+			
+			<h:column>
+				<f:facet name="header">Nome</f:facet>
+				<h:outputText value="#{place.name}" />
+			</h:column>
+			
+			<h:column>
+				<f:facet name="header">Cidade</f:facet>
+				<h:outputText value="#{place.city}" />
+			</h:column>
+			
+			<h:column>
+				<f:facet name="header">Estado</f:facet>
+				<h:outputText value="#{place.states}" />
+			</h:column>
+			
+			<h:column>
+				<f:facet name="header">Rua</f:facet>
+				<h:outputText value="#{place.street}" />
+			</h:column>
+			
+			<h:column>
+				<f:facet name="header">Bairro</f:facet>
+				<h:outputText value="#{place.district}" />
+			</h:column>
+			
+			<h:column>
+				<f:facet name="header">Número</f:facet>
+				<h:outputText value="#{place.number}" />
+			</h:column>
+			
+			<h:column>
+				<f:facet name="header">CEP</f:facet>
+				<h:outputText value="#{place.cep}" />
+			</h:column>
+			
+			<h:column>
+				<f:facet name="header">Horário</f:facet>
+				<h:outputText value="#{place.hour_func}" />
+			</h:column>
+			
+			<h:column>
+				<f:facet name="header">Latitude</f:facet>
+				<h:outputText value="#{place.latitude}" />
+			</h:column>
+			
+			<h:column>
+				<f:facet name="header">Longitude</f:facet>
+				<h:outputText value="#{place.longitude}" />
+			</h:column>
+			
+			<h:column>
+			
+					<h:commandLink  onclick="return window.open('http://swappersws-oliv.rhcloud.com/swappersws/photo?codigo=#{place.id}','busca','height=400,width=400,toolbar=no,scrollbars=no')" > 
+						<h:graphicImage value="/images/photo.png"/>
+						<f:ajax render="none"/>
+					</h:commandLink>
+					
+					<h:link outcome="CadastroLugar">
+						<h:graphicImage value="/images/editar.png"/>
+						<f:param name="codigo" value="#{place.id}"/>
+					</h:link>
+					
+					<h:commandLink action="#{consultaPlaceBean.excluir}"
+					onclick="return window.confirm('Deseja realmente excluir esse registro?')">
+						<h:graphicImage value="/images/excluir.png"/>
+						<f:setPropertyActionListener target="#{consultaPlaceBean.placeSelecionado}" value="#{place}"/>
+						<f:ajax render="@form" />
+					</h:commandLink>
+			</h:column>
+		
+		</h:dataTable>
+	</h:form>
+</h:body>
+</html>

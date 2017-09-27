@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+	<title>Consulta Doações</title>
+	
+	<h:outputStylesheet library="css" name="consulta-place.css"/>
+	
+</h:head>
+
+<h:body>
+	<div id="header">
+		<div class="menu">
+			<h:form>
+				<h:outputFormat value="Olá {0}!" styleClass="logged-user">
+					<f:param value="#{facesContext.externalContext.userPrincipal.name}"/>
+				</h:outputFormat>
+			    <h:link outcome="ConsultaUser" rendered="#{request.isUserInRole('admin')}">Usuários</h:link>
+				<h:link outcome="ConsultaPlace" rendered="#{request.isUserInRole('admin')}">Lugares</h:link>
+				<h:link outcome="ConsultaDoacao" rendered="#{request.isUserInRole('admin')}">Doações</h:link>
+				<h:link outcome="ConsultaAdocao" rendered="#{request.isUserInRole('admin')}">Adoções</h:link>
+				<h:commandLink action="#{loginBean.sair()}">Sair</h:commandLink>
+			</h:form>
+		</div>
+		<h:graphicImage value="/images/logo-swappers.png" styleClass="logo"/>
+		<h2>Swappers For Readers</h2>
+	</div>
+
+	<h1 id="dn">Doações</h1>
+	
+	<h:form id="frm">
+		
+		<p:messages showDetail="false" showSummary="true" 
+				autoUpdate="true" />
+		
+		<p:dataTable var="donation" value="#{consultaDoacao.donationRecordList}" width="100%" 
+		 border="1" cellpadding="2" cellspacing="0"
+		 paginator="true" paginatorPosition="bottom" rows="10" id="donationTable"
+		 style="margin-top: 8px" >
+			
+			<p:column headerText="Nome" sortBy="#{donation.nameUser}">
+				<h:outputText value="#{donation.nameUser}" />
+			</p:column>
+			
+			<p:column headerText="E-mail" sortBy="#{donation.email}">
+				<h:outputText value="#{donation.email}" />
+			</p:column>
+			
+			<p:column headerText="Local" filterBy="#{donation.nameLocal}" sortBy="#{donation.nameLocal}" filterMatchMode="contains">
+				<h:outputText value="#{donation.nameLocal}" />
+			</p:column>
+			
+			<p:column headerText="Cidade" filterBy="#{donation.city}" styleClass="cidade" sortBy="#{donation.city}" filterMatchMode="contains">
+				<h:outputText value="#{donation.city}" />
+			</p:column>
+			
+			<p:column headerText="Estado" filterBy="#{donation.state}" styleClass="estado" sortBy="#{donation.state}" filterMatchMode="contains">
+				<h:outputText value="#{donation.state}" />
+			</p:column>
+			
+			<p:column headerText="Livro" filterBy="#{donation.titleBook}" sortBy="#{donation.titleBook}" filterMatchMode="contains">
+				<h:outputText value="#{donation.titleBook}" />
+			</p:column>
+			
+			<p:column headerText="Data doação" styleClass="datadoacao" sortBy="#{donation.dateDonation}">
+				<h:outputText value="#{donation.dateDonation}" >
+					<f:convertDateTime pattern="dd.MM.yyyy" />
+				</h:outputText>
+			</p:column>
+			<f:facet name="footer">
+        		Total de doações: #{fn:length(consultaDoacao.donationRecordList)}
+    		</f:facet>
+		</p:dataTable>
+	</h:form>
+</h:body>
+</html>
